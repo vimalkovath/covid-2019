@@ -10,6 +10,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 export class ApiService {
 
   endpoint: string = 'https://api.steinhq.com/v1/storages/5e6fd170b88d3d04ae081593/Raw_Data';
+  endpoint2: string = 'https://api.rootnet.in/covid19-in/unofficial/covid19india.org';
   // endpoint: string = 'api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -21,8 +22,8 @@ export class ApiService {
   GeAllPatients() {
     return this.http.get(`${this.endpoint}`);
   }
-  GetStudents() {
-    return this.http.get(`${this.endpoint}`);
+  GeAllPatientscovid19() {
+    return this.http.get(`${this.endpoint2}`);
   }
 
   // Get student

@@ -8,10 +8,14 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 /* Angular 8 http service */
 import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
