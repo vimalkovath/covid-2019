@@ -13,7 +13,7 @@ import _ from 'lodash';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
   title = 'corona statastics';
 
   patientsData;
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit{
   barholding;
   alldateLine;
 
-  data = [{ "name": "reportedcases", "series": [] }, { "name": "recovered cases", "series": [] }];
+  data = [{ 'name': 'reportedcases', 'series': [] }, { 'name': 'recovered cases', 'series': [] }];
   linecartshow;
 
   ngOnInit() {
@@ -91,47 +91,47 @@ export class DashboardComponent implements OnInit{
 
     this.change = false;
     this.patientApi.GeAllPatientscovid19().subscribe(data => {
-      this.patientsAllData = data["data"]["rawPatientData"];
+      this.patientsAllData = data['data']['rawPatientData'];
       // this.patientsAllData = data;
 
       this.patientsData = this.patientsAllData.filter(
-        patients => patients['reportedOn'] !== null);
+        patients => patients.reportedOn !== null);
 
       this.clonePatientsData = _.clone(this.patientsData);
 
       console.log(this.patientsData.length);
 
       this.patientsRecoveredData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Recovered');
+        recovered => recovered.status === 'Recovered');
 
       this.patientHptlData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Hospitalized');
+        recovered => recovered.status === 'Hospitalized');
 
       this.patientDeathData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Deceased');
+        recovered => recovered.status === 'Deceased');
 
-      this.allState = _.countBy(this.patientsData, "state");
+      this.allState = _.countBy(this.patientsData, 'state');
       // this.allstatus = _.countBy(this.patientsAllData, "status");
 
       const deathlegth = this.patientsRecoveredData.length;
 
       this.singlepie.push(
         {
-          "name": "Recovered",
-          "value": deathlegth
+          'name': 'Recovered',
+          'value': deathlegth
         }
       );
 
       this.singlepie.push(
         {
-          "name": "Hospitalized",
-          "value": this.patientHptlData.length
+          'name': 'Hospitalized',
+          'value': this.patientHptlData.length
         }
       );
       this.singlepie.push(
         {
-          "name": "Deceased",
-          "value": this.patientDeathData.length
+          'name': 'Deceased',
+          'value': this.patientDeathData.length
         }
       );
 
@@ -141,22 +141,22 @@ export class DashboardComponent implements OnInit{
       // console.log(dat);
 
       console.log(this.allState);
-      for (let [key, value] of Object.entries(this.allState)) {
+      for (const [key, value] of Object.entries(this.allState)) {
         // console.log(`${key}: ${value}`);
         this.single.push({
-          "name": key,
-          "value": value
+          'name': key,
+          'value': value
         });
       }
 
-      for (let [key, value] of Object.entries(this.allState)) {
+      for (const [key, value] of Object.entries(this.allState)) {
 
         // this.allstatus = _.countBy(this.patientsAllData, "status");
-        const alldat = _.filter(this.patientsAllData, _.matches({ 'state': `${key}` }));
+        const alldat = _.filter(this.patientsAllData, _.matches({ state: `${key}` }));
 
-        const allMale = _.filter(alldat, _.matches({ 'gender': "male" }));
-        const allFemale = _.filter(alldat, _.matches({ 'gender': "female" }));
-        const allnull = _.filter(alldat, _.matches({ 'gender': null }));
+        const allMale = _.filter(alldat, _.matches({ gender: 'male' }));
+        const allFemale = _.filter(alldat, _.matches({ gender: 'female' }));
+        const allnull = _.filter(alldat, _.matches({ gender: null }));
         // const alldat = _.filter(this.patientsAllData, _.matches({
         //   'state': `${key}`
         //    'status': 'Recovered' }));
@@ -164,19 +164,19 @@ export class DashboardComponent implements OnInit{
         //  console.log(alldat);
 
         this.multi.push({
-          "name": `${key}`,
-          "series": [
+          'name': `${key}`,
+          'series': [
             {
-              "name": "Male",
-              "value": allMale.length,
+              'name': 'Male',
+              'value': allMale.length,
             },
             {
-              "name": "Female",
-              "value": allFemale.length,
+              'name': 'Female',
+              'value': allFemale.length,
             },
             {
-              "name": "Null",
-              "value": allnull.length,
+              'name': 'Null',
+              'value': allnull.length,
             }
           ]
         });
@@ -196,15 +196,15 @@ export class DashboardComponent implements OnInit{
       // console.log(alldat);
 
       // line chart start
-      this.alldateLine = _.countBy(this.patientsData, "reportedOn");
+      this.alldateLine = _.countBy(this.patientsData, 'reportedOn');
       console.log(this.alldateLine);
 
 
-      for (let [key, value] of Object.entries(this.alldateLine)) {
+      for (const [key, value] of Object.entries(this.alldateLine)) {
 
-        this.data[0].series.push( { "name": key, "value": value  } )
+        this.data[0].series.push( { 'name': key, 'value': value  } );
       }
- 
+
       this.change = true;
 
       this.linecartshow = true;
@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit{
 
   colorFun(x: any): string {
     console.log('colorFun: x:', x);
-    //Not working because x is the name and not the value
+    // Not working because x is the name and not the value
     // return x < 1.5 ? 'red' : (x < 1.7 ? 'yellow' : 'green');
     // return x.value < 1.5 ? 'red' : (x.value < 1.7 ? 'yellow' : 'green');
     return 'green';
@@ -236,27 +236,25 @@ export class DashboardComponent implements OnInit{
 
     if (this.barholding === 'state') {
       if (data) {
-        this.patientsData = this.clonePatientsData.filter(
-          patients => patients['state'] === search);
+        this.patientsData = data.filter(
+          patients => patients.state === search);
         console.log('inside data');
       } else {
         this.patientsData = this.patientsAllData.filter(
-          patients => patients['state'] === search);
+          patients => patients.state === search);
         console.log('no data');
       }
-
-
 
       console.log(this.patientsData.length);
 
       this.patientsRecoveredData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Recovered');
+        recovered => recovered.status === 'Recovered');
 
       this.patientHptlData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Hospitalized');
+        recovered => recovered.status === 'Hospitalized');
 
       this.patientDeathData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Deceased');
+        recovered => recovered.status === 'Deceased');
 
 
       // this.allState = _.countBy(this.patientsAllData, "state);
@@ -264,22 +262,22 @@ export class DashboardComponent implements OnInit{
 
 
 
-      this.allState = _.countBy(this.patientsData, "district");
-      this.allstatus = _.countBy(this.patientsData, "status");
+      this.allState = _.countBy(this.patientsData, 'district');
+      this.allstatus = _.countBy(this.patientsData, 'status');
       // this.allReported = _.countBy(this.patientsAllData, "reportedOn");
 
-      this.barholding = "district";
+      this.barholding = 'district';
 
 
-      for (let [key, value] of Object.entries(this.allState)) {
+      for (const [key, value] of Object.entries(this.allState)) {
 
         console.log(key, value);
         // this.allstatus = _.countBy(this.patientsAllData, "status");
-        const alldat = _.filter(this.patientsAllData, _.matches({ 'district': `${key}` }));
+        const alldat = _.filter(this.patientsAllData, _.matches({ district: `${key}` }));
 
-        const allMale = _.filter(alldat, _.matches({ 'gender': "M" }));
-        const allFemale = _.filter(alldat, _.matches({ 'gender': "F" }));
-        const allnull = _.filter(alldat, _.matches({ 'gender': null }));
+        const allMale = _.filter(alldat, _.matches({ gender: 'male' }));
+        const allFemale = _.filter(alldat, _.matches({ gender: 'female' }));
+        const allnull = _.filter(alldat, _.matches({ gender: null }));
         // const alldat = _.filter(this.patientsAllData, _.matches({
         //   'state': `${key}`
         //    'status': 'Recovered' }));
@@ -287,34 +285,34 @@ export class DashboardComponent implements OnInit{
         //  console.log(alldat);
 
         this.multi.push({
-          "name": `${key}`,
-          "series": [
+          'name': `${key}`,
+          'series': [
             {
-              "name": "Male",
-              "value": allMale.length,
+              'name': 'Male',
+              'value': allMale.length,
             },
             {
-              "name": "Female",
-              "value": allFemale.length,
+              'name': 'Female',
+              'value': allFemale.length,
             },
             {
-              "name": "Null",
-              "value": allnull.length,
+              'name': 'Null',
+              'value': allnull.length,
             }
           ]
         });
 
       }
       // line chart start
-      this.alldateLine = _.countBy(this.patientsData, "reportedOn");
+      this.alldateLine = _.countBy(this.patientsData, 'reportedOn');
 
-      for (let [key, value] of Object.entries(this.alldateLine)) {
+      for (const [key, value] of Object.entries(this.alldateLine)) {
         this.data[0].series.push(
           {
-            "name": key,
-            "value": value
+            'name': key,
+            'value': value
           }
-        )
+        );
       }
       console.log(this.alldateLine);
       this.linecartshow = true;
@@ -325,60 +323,62 @@ export class DashboardComponent implements OnInit{
     } else if (this.barholding === 'district') {
 
       this.patientsAllData = this.patientsAllData.filter(
-        patients => (patients['district'] === search));
+        patients => (patients.district === search));
 
       this.patientsData = this.patientsAllData.filter(
-        patients => patients['reportedOn'] !== null);
+        patients => patients.reportedOn !== null);
 
       console.log(this.patientsData.length);
       this.patientsRecoveredData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Recovered');
+        recovered => recovered.status === 'Recovered');
 
       this.patientHptlData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Hospitalized');
+        recovered => recovered.status === 'Hospitalized');
 
       this.patientDeathData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Deceased');
+        recovered => recovered.status === 'Deceased');
 
-      this.allState = _.countBy(this.patientsAllData, "city");
-      this.allstatus = _.countBy(this.patientsAllData, "status");
+      this.allState = _.countBy(this.patientsAllData, 'city');
+      this.allstatus = _.countBy(this.patientsAllData, 'status');
 
 
 
-      for (let [key, value] of Object.entries(this.allState)) {
+      for (const [key, value] of Object.entries(this.allState)) {
 
         console.log(key, value);
-        const alldat = _.filter(this.patientsAllData, _.matches({ 'city': `${key}` }));
+        const alldat = _.filter(this.patientsAllData, _.matches({ city: `${key}` }));
 
-        const allMale = _.filter(alldat, _.matches({ 'gender': "M" }));
-        const allFemale = _.filter(alldat, _.matches({ 'gender': "F" }));
-        const allnull = _.filter(alldat, _.matches({ 'gender': null }));
+        const allMale = _.filter(alldat, _.matches({ gender: 'male' }));
+        const allFemale = _.filter(alldat, _.matches({ gender: 'female' }));
+        const allnull = _.filter(alldat, _.matches({ gender: null }));
 
         this.multi.push({
-          "name": `${key}`,
-          "series": [
-            { "name": "Male", "value": allMale.length },
-            { "name": "Female", "value": allFemale.length },
-            { "name": "Null", "value": allnull.length, }
+          'name': `${key}`,
+          'series': [
+            { 'name': 'Male', 'value': allMale.length },
+            { 'name': 'Female', 'value': allFemale.length },
+            { 'name': 'Null', 'value': allnull.length, }
           ]
         });
 
+
+        // this.multi = [...this.multi];
       }
 
-      this.barholding = "city";
+      this.barholding = 'city';
 
 
       // line chart start
       this.linecartshow = false;
-      this.alldateLine = _.countBy(this.patientsAllData, "reportedOn");
+      this.alldateLine = _.countBy(this.patientsAllData, 'reportedOn');
 
-      for (let [key, value] of Object.entries(this.alldateLine)) {
+      for (const [key, value] of Object.entries(this.alldateLine)) {
         this.data[0].series.push(
           {
-            "name": key,
-            "value": value
+            'name': key,
+            'value': value
           }
-        )
+        );
       }
       console.log(this.alldateLine);
       this.linecartshow = true;
@@ -395,61 +395,55 @@ export class DashboardComponent implements OnInit{
     this.data[0].series = [];
     this.patientApi.GeAllPatientscovid19().subscribe(data => {
 
-      this.patientsAllData = data["data"]["rawPatientData"];
+      this.patientsAllData = data['data']['rawPatientData'];
       // console.log(this.patientsAllData);
       // this.patientsAllData = data;
 
       console.log('this.patientsAllData', this.patientsAllData.length);
 
       this.patientsData = this.patientsAllData.filter(
-        patients => patients['reportedOn'] !== null);
+        patients => patients.reportedOn !== null);
 
       this.clonePatientsData = _.clone(this.patientsData);
 
       console.log(this.patientsData.length);
       this.patientsRecoveredData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Recovered');
+        recovered => recovered.status === 'Recovered');
 
       this.patientHptlData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Hospitalized');
+        recovered => recovered.status === 'Hospitalized');
 
       this.patientDeathData = this.patientsData.filter(
-        recovered => recovered['status'] === 'Deceased');
+        recovered => recovered.status === 'Deceased');
 
 
-      this.allState = _.countBy(this.patientsData, "state");
-      this.allstatus = _.countBy(this.patientsData, "status");
+      this.allState = _.countBy(this.patientsData, 'state');
+      this.allstatus = _.countBy(this.patientsData, 'status');
 
 
 
-      for (let [key, value] of Object.entries(this.allState)) {
+      for (const [key, value] of Object.entries(this.allState)) {
 
-        // this.allstatus = _.countBy(this.patientsAllData, "status");
-        const alldat = _.filter(this.patientsAllData, _.matches({ 'state': `${key}` }));
+        const alldat = _.filter(this.patientsAllData, _.matches({ state: `${key}` }));
 
-        const allMale = _.filter(alldat, _.matches({ 'gender': "male" }));
-        const allFemale = _.filter(alldat, _.matches({ 'gender': "female" }));
-        const allnull = _.filter(alldat, _.matches({ 'gender': null }));
-        // const alldat = _.filter(this.patientsAllData, _.matches({
-        //   'state': `${key}`
-        //    'status': 'Recovered' }));
-
-        //  console.log(alldat);
+        const allMale = _.filter(alldat, _.matches({ gender: 'male' }));
+        const allFemale = _.filter(alldat, _.matches({ gender: 'female' }));
+        const allnull = _.filter(alldat, _.matches({ gender: null }));
 
         this.multi.push({
-          "name": `${key}`,
-          "series": [
+          'name': `${key}`,
+          'series': [
             {
-              "name": "Male",
-              "value": allMale.length,
+              'name': 'Male',
+              'value': allMale.length,
             },
             {
-              "name": "Female",
-              "value": allFemale.length,
+              'name': 'Female',
+              'value': allFemale.length,
             },
             {
-              "name": "Null",
-              "value": allnull.length,
+              'name': 'Null',
+              'value': allnull.length,
             }
           ]
         });
@@ -457,20 +451,20 @@ export class DashboardComponent implements OnInit{
       }
 
       this.change = true;
-      this.barholding = "state";
+      this.barholding = 'state';
 
 
       // line chart start
       this.linecartshow = false;
-      this.alldateLine = _.countBy(this.patientsAllData, "reportedOn");
+      this.alldateLine = _.countBy(this.patientsAllData, 'reportedOn');
 
-      for (let [key, value] of Object.entries(this.alldateLine)) {
+      for (const [key, value] of Object.entries(this.alldateLine)) {
         this.data[0].series.push(
           {
-            "name": key,
-            "value": value
+            'name': key,
+            'value': value
           }
-        )
+        );
       }
 
       this.linecartshow = true;
@@ -480,19 +474,6 @@ export class DashboardComponent implements OnInit{
   }
 
 
-
-
-
-
-  onDivClick(state) {
-
-    console.log("DIV is clicked!", state);
-    this.stateData = this.patientsData.filter(
-      statedata => statedata['state'] === state);
-    console.log(this.stateData);
-    this.state_status = _.countBy(this.stateData, "status");
-
-  }
 
 
 
@@ -509,6 +490,14 @@ export class DashboardComponent implements OnInit{
     this.onChartClickTrigger(e.series, '');
   }
 
+  onitemSelect(e){
+    console.log(e, 'onclick');
+    this.multi = [];
+    this.data[0].series = [];
+    this.linecartshow = false;
+    this.onChartClickTrigger(e, '');
+  }
+
   // onTreeSelect(e) {
   //   console.log(e, 'onclick', e.name);
   //   this.multi = [];
@@ -523,7 +512,7 @@ export class DashboardComponent implements OnInit{
     console.log(e);
     this.multi = [];
     this.data[0].series = [];
-    this.barholding = "state";
+    this.barholding = 'state';
     this.linecartshow = false;
     this.onChartClickTrigger(e, this.clonePatientsData);
     this.barchart = true;
