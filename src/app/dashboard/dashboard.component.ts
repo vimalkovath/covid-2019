@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
   // options for the chart
   showXAxis = true;
   showYAxis = true;
-  gradient = false;
+  gradient = true;
   showLegend = true;
   showXAxisLabel = true;
   xAxisLabel = 'States';
@@ -84,6 +84,10 @@ export class DashboardComponent implements OnInit {
   data = [{ 'name': 'reportedcases', 'series': [] }, { 'name': 'recovered cases', 'series': [] }];
   linecartshow;
 
+  allStatesObj;
+  allStateDeath;
+  allStateDeathCount;
+
   ngOnInit() {
     this.barholding = 'state';
     this.linecartshow = false;
@@ -110,7 +114,16 @@ export class DashboardComponent implements OnInit {
       this.patientDeathData = this.patientsData.filter(
         recovered => recovered.status === 'Deceased');
 
+      // this.allStateDeath = _.countBy(this.patientsData, { 'status': 'Deceased' });
+
+      this.allStateDeath = _.filter(this.patientsData, _.matches({ 'status': 'Deceased'}));
+      this.allStateDeathCount = _.countBy(this.allStateDeath , "state");
+
       this.allState = _.countBy(this.patientsData, 'state');
+      this.allStatesObj = this.sortObject(this.allState);
+      // this.allState= this.sortObject(alldat_notsorted);
+
+      console.log(this.allStateDeath);
       // this.allstatus = _.countBy(this.patientsAllData, "status");
 
       const deathlegth = this.patientsRecoveredData.length;
@@ -202,7 +215,7 @@ export class DashboardComponent implements OnInit {
 
       for (const [key, value] of Object.entries(this.alldateLine)) {
 
-        this.data[0].series.push( { 'name': key, 'value': value  } );
+        this.data[0].series.push({ 'name': key, 'value': value });
       }
 
       this.change = true;
@@ -214,6 +227,22 @@ export class DashboardComponent implements OnInit {
     this.rows = this.allState;
   }
 
+  sortObject(obj) {
+    var arr = [];
+    var prop;
+    for (prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        arr.push({
+          'key': prop,
+          'value': obj[prop]
+        });
+      }
+    }
+    arr.sort(function (a, b) {
+      return b.value - a.value;
+    });
+    return arr; // returns array
+  }
   colorFun(x: any): string {
     console.log('colorFun: x:', x);
     // Not working because x is the name and not the value
@@ -223,7 +252,9 @@ export class DashboardComponent implements OnInit {
   }
   // onclick
 
-
+  onResize(event) {
+    this.view = [event.target.innerWidth / 1.2, 400];
+}
 
   onChartClickTrigger(search, data) {
     this.linecartshow = false;
@@ -263,6 +294,7 @@ export class DashboardComponent implements OnInit {
 
 
       this.allState = _.countBy(this.patientsData, 'district');
+      this.allStatesObj = this.sortObject(this.allState);
       this.allstatus = _.countBy(this.patientsData, 'status');
       // this.allReported = _.countBy(this.patientsAllData, "reportedOn");
 
@@ -339,6 +371,7 @@ export class DashboardComponent implements OnInit {
         recovered => recovered.status === 'Deceased');
 
       this.allState = _.countBy(this.patientsAllData, 'city');
+      this.allStatesObj = this.sortObject(this.allState);
       this.allstatus = _.countBy(this.patientsAllData, 'status');
 
 
@@ -418,6 +451,7 @@ export class DashboardComponent implements OnInit {
 
 
       this.allState = _.countBy(this.patientsData, 'state');
+      this.allStatesObj = this.sortObject(this.allState);
       this.allstatus = _.countBy(this.patientsData, 'status');
 
 
@@ -490,7 +524,7 @@ export class DashboardComponent implements OnInit {
     this.onChartClickTrigger(e.series, '');
   }
 
-  onitemSelect(e){
+  onitemSelect(e) {
     console.log(e, 'onclick');
     this.multi = [];
     this.data[0].series = [];
@@ -518,6 +552,8 @@ export class DashboardComponent implements OnInit {
     this.barchart = true;
   }
 
-  constructor(private patientApi: ApiService, ) { }
+  constructor(private patientApi: ApiService, ) { 
+    this.view = [innerWidth / 1.1, 400];
+  }
 
 }
